@@ -1,0 +1,24 @@
+{% extends "../base.html" %}
+
+{% block contents %}
+  <!--<table border="1" class="table table-striped">-->
+      <!--<tr>-->
+          <!--<th>質問内容</th>-->
+          <!--<th>公開日</th>-->
+          <!--<th></th>-->
+      <!--</tr>-->
+          <!--{% for question in questions %}-->
+      <!--<tr>-->
+         <!--<td>{{ question.question_text }}</td>-->
+         <!--<td>{{ question.pub_date }}</td>-->
+         <!--<td><a href="{% url 'poll_detail' question.pk %}">詳細画面へ</a></td>-->
+      <!--</tr>-->
+      <!--{% endfor %}-->
+  <!--</table>-->
+<!--{% endblock contents %}-->
+<h1>{{ question.question_text }}</h1>
+
+<form action="" method="post">
+  {% csrf_token %}
+  <input type="submit" value="Vote" />
+</form>
