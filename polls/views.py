@@ -1,19 +1,15 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.utils.html import mark_safe
 from .models import Question
-from django.http import HttpResponse
-from django.shortcuts import Http404
 from django.shortcuts import get_object_or_404,redirect
 from .models import Choice
-from django.views.generic import TemplateView
-from django.views.generic import DetailView
-from django.views.generic import ListView
 from .forms import MyForm
 from .forms import VoteForm
 from django.views.generic import FormView
 from django.views.generic.detail import SingleObjectMixin
 from django.shortcuts import resolve_url
+from django.contrib import messages
+from django.urls import reverse
 
 
 
@@ -23,19 +19,6 @@ def index(request):
         'questions': Question.objects.all(),
     })
 
-# def detail(request,pk):
-#     obj = get_object_or_404(Question,pk=pk)
-#     if request.method == "POST":
-#         form = VoteForm(question=obj,data=request.POST)
-#         if form.is_valid():
-#             form.vote()
-#             return redirect('polls:results',pk)
-#     else:
-#         form = VoteForm(question=obj)
-#     return render(request,'polls/detail.html',{
-#         'form':form,
-#         'question': obj,
-#     })
 
 def vote(request,pk):
     question = get_object_or_404(Question,pk=pk)
@@ -49,9 +32,9 @@ def vote(request,pk):
     else:
         selected_choice.votes += 1
         selected_choice.save()
-        return redirect('index')
-    return redirect('poll_results', pk)
-    # pass
+    return redirect(reverse('polls:poll_results'), pk=pk)
+    # return redirect('results_url', pk=pk)
+
 
 def results(request,pk):
     obj = get_object_or_404(Question,pk=pk)
@@ -86,6 +69,8 @@ class Detail(SingleObjectMixin,FormView):
 
     def form_valid(self, form):
         form.vote()
+        choice = form.cleaned_data['choice']
+        messages.success(self.request,'"%s"に投票しました' % choice)
         return super().form_valid(form)
 
     def get_success_url(self):

@@ -13,7 +13,7 @@
     <title>Starter Template for Bootstrap</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     <style type="text/css">
 body {
   padding-top: 50px;
@@ -43,9 +43,11 @@ body {
     </nav>
 
     <div class="container">
-    {% bootstrap_messages messages %}
-    {% block contents %}{% endblock %}
-    </div><!-- /.container -->
+        {% if messages %}
+        {% bootstrap_messages messages %}
+        {% endif %}
+        {% block contents %}{% endblock %}
+    </div>
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
