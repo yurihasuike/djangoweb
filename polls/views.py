@@ -25,15 +25,14 @@ def vote(request,pk):
     try:
         selected_choice = question.choice_set.get(pk=request.POST['choice'])
     except (KeyError,Choice.DoesNotExist):
-        return render(request,'poll/detail.html',{
+        return render(request,'polls/detail.html',{
             'question':question,
             'error_message':"You didn't select a choice",
         })
     else:
         selected_choice.votes += 1
         selected_choice.save()
-    return redirect(reverse('polls:poll_results'), pk=pk)
-    # return redirect('results_url', pk=pk)
+    return redirect('polls:polls_results', pk=pk)
 
 
 def results(request,pk):
